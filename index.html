@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Database</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="app-title">Movie Database</h1>
+            <p class="app-subtitle">Discover movies by IMDb ID</p>
+        </header>
+
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="imdbInput" 
+                class="search-input" 
+                placeholder="Enter IMDb ID (e.g., tt0111161)"
+                autocomplete="off"
+            >
+            <button id="searchBtn" class="search-btn">Search</button>
+        </div>
+
+        <div id="loading" class="loading-container hidden">
+            <div class="spinner"></div>
+            <p>Loading movie data...</p>
+        </div>
+
+        <div id="error" class="error-container hidden">
+            <p class="error-message"></p>
+        </div>
+
+        <div id="movieData" class="movie-container hidden">
+            <div class="movie-header">
+                <div class="movie-poster-container">
+                    <img id="moviePoster" class="movie-poster" alt="Movie Poster">
+                </div>
+                <div class="movie-info">
+                    <div class="movie-logo-container">
+                        <img id="movieLogo" class="movie-logo" alt="Movie Logo">
+                    </div>
+                    <h2 id="movieTitle" class="movie-title"></h2>
+                    <div class="movie-meta">
+                        <span id="movieYear" class="movie-year"></span>
+                        <span class="separator">•</span>
+                        <span id="movieRated" class="movie-rated"></span>
+                        <span class="separator">•</span>
+                        <span id="movieRuntime" class="movie-runtime"></span>
+                    </div>
+                    <div class="movie-genres" id="movieGenre"></div>
+                    <div class="ratings-container">
+                        <div class="rating-item">
+                            <span class="rating-label">IMDb</span>
+                            <span id="imdbRating" class="rating-value"></span>
+                        </div>
+                        <div class="rating-item">
+                            <span class="rating-label">Metascore</span>
+                            <span id="metascore" class="rating-value"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="movie-details">
+                <div class="detail-section">
+                    <h3 class="section-title">Synopsis</h3>
+                    <p id="moviePlot" class="movie-plot"></p>
+                </div>
+
+                <div class="detail-section">
+                    <h3 class="section-title">Director</h3>
+                    <p id="movieDirector" class="movie-director"></p>
+                </div>
+
+                <div class="detail-section">
+                    <h3 class="section-title">Cast</h3>
+                    <p id="movieActors" class="movie-actors"></p>
+                </div>
+
+                <div class="detail-section">
+                    <h3 class="section-title">Writers</h3>
+                    <p id="movieWriter" class="movie-writer"></p>
+                </div>
+
+                <div class="additional-info">
+                    <div class="info-item">
+                        <span class="info-label">Language:</span>
+                        <span id="movieLanguage" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Country:</span>
+                        <span id="movieCountry" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Awards:</span>
+                        <span id="movieAwards" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Box Office:</span>
+                        <span id="movieBoxOffice" class="info-value"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
