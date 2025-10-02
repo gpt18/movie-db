@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Cinematic Details</title>
+    <title>Premium Cinematic Search & Details</title>
     <style>
         /* Modern Font: Using system fonts first, falling back to a clean sans-serif */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
@@ -33,7 +33,6 @@
             padding: 0;
             background-color: var(--background-dark);
             color: var(--text-light);
-            transition: background-color 0.3s ease;
             min-height: 100vh;
         }
 
@@ -85,10 +84,10 @@
             box-shadow: var(--shadow-vibrant);
         }
         
-        /* --- Hero Section (Cinematic Background) --- */
+        /* --- Hero Section (Detail View) --- */
         .hero {
             position: relative;
-            height: 70vh; /* Taller hero section */
+            height: 70vh;
             display: flex;
             align-items: flex-end;
             padding: 50px;
@@ -96,10 +95,9 @@
             background-size: cover;
             background-position: center center;
             transition: background-image 0.5s ease;
-            overflow: hidden; /* Important for cleaner logo display */
+            overflow: hidden;
         }
 
-        /* Enhanced Gradient Overlay for readability */
         .hero::before {
             content: '';
             position: absolute;
@@ -111,7 +109,7 @@
             z-index: 1;
         }
 
-        /* --- Movie Header Details --- */
+        /* --- Movie Header Details (Detail View) --- */
         .movie-header {
             position: relative;
             z-index: 2;
@@ -123,7 +121,7 @@
         }
 
         .poster-image {
-            width: 280px; /* Slightly larger poster */
+            width: 280px; 
             height: 420px;
             border-radius: 12px;
             box-shadow: var(--shadow-subtle);
@@ -135,7 +133,7 @@
         }
 
         .poster-image:hover {
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.7); /* Subtle glow on hover */
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.7); 
             transform: scale(1.02);
         }
 
@@ -148,7 +146,7 @@
             height: auto;
             margin-bottom: 15px;
             display: block;
-            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8)); /* Logo shadow for contrast */
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
         }
 
         .movie-title {
@@ -186,6 +184,72 @@
             padding-left: 20px;
         }
 
+        /* --- Search Results Container --- */
+        #search-results-list {
+            padding-top: 20px;
+        }
+        #search-results-container {
+            max-width: 1000px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            min-height: 50vh;
+        }
+
+        .result-card {
+            background: #1c1c1c;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            cursor: pointer;
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.2s, box-shadow 0.3s, background-color 0.2s;
+            border: 1px solid #2a2a2a;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9), var(--shadow-vibrant);
+            background-color: #252525;
+        }
+
+        .result-image {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .result-info {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-info h4 {
+            color: var(--text-highlight);
+            font-size: 1.1em;
+            margin: 0 0 5px 0;
+            font-weight: 600;
+        }
+
+        .result-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+
+        .result-info .type-tag {
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
         /* --- Main Details Section (Glassmorphism) --- */
         .main-content {
             padding: 40px 20px;
@@ -194,10 +258,9 @@
         }
 
         .details-container {
-            /* Glassmorphism Effect */
             background: var(--card-glass);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px); /* Safari support */
+            -webkit-backdrop-filter: blur(10px); 
             padding: 40px;
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -260,8 +323,8 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 240, 255, 0.4);
         }
-
-        /* --- Loading and Error States (Styled) --- */
+        
+        /* --- Loading and Error States --- */
         #loader {
             text-align: center;
             padding: 80px;
@@ -292,66 +355,41 @@
 
         /* Responsive Design */
         @media (max-width: 900px) {
-            .hero {
-                height: auto;
-                padding-top: 20px;
-            }
-            .movie-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .poster-image {
-                margin: 0 0 20px 0;
-            }
-            .movie-logo {
-                max-width: 80%;
-            }
-            .movie-title {
-                font-size: 2.5em;
-            }
-            .stats-line {
-                justify-content: center;
-            }
-            .details-container {
-                padding: 20px;
-            }
+            .hero { height: auto; padding-top: 20px; }
+            .movie-header { flex-direction: column; align-items: center; text-align: center; }
+            .poster-image { margin: 0 0 20px 0; }
+            .movie-logo { max-width: 80%; }
+            .movie-title { font-size: 2.5em; }
+            .stats-line { justify-content: center; }
+            .details-container { padding: 20px; }
+            #search-results-container { grid-template-columns: 1fr; }
         }
         @media (max-width: 600px) {
-            .poster-image {
-                width: 180px;
-                height: 270px;
-            }
-            .movie-title {
-                font-size: 2em;
-            }
-            .search-container {
-                flex-direction: column;
-            }
-            .search-input, .search-button {
-                width: 100%;
-                box-sizing: border-box;
-                border-radius: 6px;
-                margin-bottom: 10px;
-            }
-            .search-input {
-                 border-right: 1px solid #333;
-            }
-            .search-button {
-                margin-bottom: 0;
-            }
+            .poster-image { width: 180px; height: 270px; }
+            .movie-title { font-size: 2em; }
+            .search-container { flex-direction: column; }
+            .search-input, .search-button { width: 100%; box-sizing: border-box; border-radius: 6px; margin-bottom: 10px; }
+            .search-input { border-right: 1px solid #333; }
+            .search-button { margin-bottom: 0; }
         }
     </style>
 </head>
 <body>
 
     <div class="search-container">
-        <input type="text" id="movie-id-input" class="search-input" placeholder="Enter IMDb ID (e.g., tt5950044)">
-        <button class="search-button" onclick="fetchMovieDetails()">FIND MOVIE</button>
+        <input type="text" id="search-keyword-input" class="search-input" placeholder="Enter IMDb ID (tt...) or search by keyword">
+        <button class="search-button" onclick="handleSearch()">SEARCH</button>
     </div>
 
     <div id="error-message"></div>
     <div id="loader">Loading cinematic data...</div>
+
+    <div id="search-results-list" style="display: none;">
+        <h2 style="color: var(--accent-color); text-align: center; margin: 30px 0;">// SEARCH RESULTS</h2>
+        <div id="search-results-container">
+            </div>
+    </div>
+
 
     <div id="movie-page-content" style="display: none;">
         <header class="hero" id="hero-section">
@@ -400,19 +438,24 @@
                     <strong>CAST</strong> 
                     <div id="movie-cast" class="cast"></div>
                 </div>
-
             </div>
         </main>
     </div>
 
     <script>
-        // Default ID for initial load
-        const DEFAULT_IMDB_ID = 'tt5950044'; 
-
         // API Endpoint Templates
-        const API_BASE = 'https://v3-cinemeta.strem.io/meta/movie/';
+        const IMDB_DETAIL_API = 'https://v3-cinemeta.strem.io/meta/movie/';
+        const IMDB_SEARCH_API = 'https://v3-cinemeta.strem.io/catalog/movie/top/search='; 
 
         // DOM Element references
+        const searchInput = document.getElementById('search-keyword-input');
+        const searchResultsList = document.getElementById('search-results-list');
+        const searchResultsContainer = document.getElementById('search-results-container');
+        const contentDiv = document.getElementById('movie-page-content');
+        const loader = document.getElementById('loader');
+        const errorMessage = document.getElementById('error-message');
+        
+        // Detail view DOM references
         const heroSection = document.getElementById('hero-section');
         const posterImage = document.getElementById('poster-image');
         const movieLogo = document.getElementById('movie-logo');
@@ -425,56 +468,141 @@
         const movieDirector = document.getElementById('movie-director');
         const movieWriter = document.getElementById('movie-writer');
         const movieCast = document.getElementById('movie-cast');
-        const contentDiv = document.getElementById('movie-page-content');
-        const loader = document.getElementById('loader');
-        const errorMessage = document.getElementById('error-message');
 
         /**
-         * Clears all content fields.
+         * Clears all content and resets UI state.
+         * @param {string} mode - 'search' or 'detail'
          */
-        function clearContent() {
-            heroSection.style.backgroundImage = 'none';
-            posterImage.src = '';
-            movieLogo.src = '';
-            movieLogo.style.display = 'none';
-            movieTitle.textContent = '';
-            imdbRating.textContent = '';
-            releaseYear.textContent = '';
-            movieDescription.textContent = '';
-            movieGenres.innerHTML = '';
-            movieCountry.textContent = '';
-            movieDirector.innerHTML = '';
-            movieWriter.innerHTML = '';
-            movieCast.innerHTML = '';
-            contentDiv.style.display = 'none';
+        function clearContent(mode = 'detail') {
             errorMessage.style.display = 'none';
+            contentDiv.style.display = 'none';
+            searchResultsList.style.display = 'none';
+            searchResultsContainer.innerHTML = '';
+            
+            loader.textContent = mode === 'search' ? 'Searching for titles...' : 'Loading cinematic data...';
+            loader.style.display = 'none';
         }
 
         /**
-         * Helper function to create tags (for genres, cast, etc.)
-         * @param {string} text - The text for the tag.
-         * @returns {HTMLElement} The created span element.
+         * Primary function to check input type and route to the correct API call.
          */
-        function createTag(text) {
-            const span = document.createElement('span');
-            span.className = 'genre-tag';
-            span.textContent = text;
-            return span;
+        function handleSearch() {
+            const input = searchInput.value.trim();
+
+            if (!input) {
+                clearContent();
+                errorMessage.textContent = 'Please enter an IMDb ID or a search keyword.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Regular expression to check for an IMDb ID (tt followed by 1 or more digits)
+            const imdbIdRegex = /^tt\d+$/i;
+
+            if (imdbIdRegex.test(input)) {
+                // Input is an IMDb ID, load details directly
+                fetchMovieDetails(input);
+            } else if (input.length >= 2) {
+                // Input is a keyword, trigger search
+                searchMovie(input);
+            } else {
+                clearContent();
+                errorMessage.textContent = 'Keyword must be at least 2 characters long.';
+                errorMessage.style.display = 'block';
+            }
+        }
+        
+        /**
+         * Renders a single search result card.
+         * @param {object} item - An object from the 'metas' array.
+         */
+        function createResultCard(item) {
+            if (!item.id || !item.id.startsWith('tt')) {
+                return null;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            
+            card.addEventListener('click', () => {
+                fetchMovieDetails(item.id);
+            });
+            
+            const imageUrl = item.poster || 'https://via.placeholder.com/100x150?text=No+Poster';
+
+            card.innerHTML = `
+                <img src="${imageUrl}" alt="${item.name}" class="result-image">
+                <div class="result-info">
+                    <h4>${item.name || 'Title Unknown'}</h4>
+                    <p>${item.releaseInfo || ''}</p>
+                    <span class="type-tag">${item.type || 'Unknown'}</span>
+                </div>
+            `;
+            
+            return card;
         }
 
         /**
-         * Renders the fetched movie data to the page.
-         * @param {object} data - The movie meta data object.
+         * Mode 1: Fetches search results from the Cinmeta Catalog Search API.
+         * @param {string} keyword - The search term.
+         */
+        async function searchMovie(keyword) {
+            clearContent('search');
+            loader.style.display = 'block';
+
+            const encodedKeyword = encodeURIComponent(keyword);
+            const url = `${IMDB_SEARCH_API}${encodedKeyword}.json`;
+
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data.metas || data.metas.length === 0) {
+                    throw new Error(`No titles found for "${keyword}".`);
+                }
+                
+                let validResultsCount = 0;
+                data.metas.forEach(item => {
+                    const card = createResultCard(item);
+                    if (card) {
+                        searchResultsContainer.appendChild(card);
+                        validResultsCount++;
+                    }
+                });
+                
+                if (validResultsCount === 0) {
+                     throw new Error(`No valid titles found for "${keyword}".`);
+                }
+
+                searchResultsList.style.display = 'block';
+
+            } catch (error) {
+                console.error('Search error:', error);
+                errorMessage.textContent = `Search failed: ${error.message}`;
+                errorMessage.style.display = 'block';
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+
+        /**
+         * Renders the fetched movie data to the page. (Existing function)
          */
         function renderMovieDetails(data) {
-            const meta = data.meta;
+             const meta = data.meta;
             if (!meta) {
                 throw new Error("Invalid movie meta data structure.");
             }
 
             // 1. Header/Hero Section
-            heroSection.style.backgroundImage = `url(${meta.background.replace('/medium/', '/large/')})`; // Use larger background
-            posterImage.src = meta.poster.replace('/small/', '/medium/');
+            heroSection.style.backgroundImage = `url(${meta.background ? meta.background.replace('/medium/', '/large/') : ''})`; 
+            posterImage.src = meta.poster ? meta.poster.replace('/small/', '/medium/') : ''; 
 
             if (meta.logo) {
                 movieLogo.src = meta.logo.replace('/medium/', '/large/');
@@ -486,30 +614,31 @@
             // 2. Main Info Block
             movieTitle.textContent = meta.name || 'TITLE UNKNOWN';
             imdbRating.textContent = `IMDb ${meta.imdbRating || 'N/A'}`;
-            releaseYear.textContent = meta.year || 'N/A';
+            releaseYear.textContent = meta.year || meta.releaseInfo || 'N/A';
             
             // 3. Details Section
             movieDescription.textContent = meta.description || 'No detailed synopsis available.';
             movieCountry.textContent = meta.country || 'N/A';
 
-            // Lists (Genres, Cast, Director, Writer)
+            function createTag(text) {
+                const span = document.createElement('span');
+                span.className = 'genre-tag';
+                span.textContent = text;
+                return span;
+            }
             
-            // Genres
             movieGenres.innerHTML = '';
             (meta.genres || []).forEach(genre => movieGenres.appendChild(createTag(genre)));
             if (movieGenres.children.length === 0) movieGenres.textContent = 'N/A';
             
-            // Director
             movieDirector.innerHTML = '';
             (meta.director || []).forEach(director => movieDirector.appendChild(createTag(director)));
             if (movieDirector.children.length === 0) movieDirector.textContent = 'N/A';
             
-            // Writer
             movieWriter.innerHTML = '';
             (meta.writer || []).forEach(writer => movieWriter.appendChild(createTag(writer)));
             if (movieWriter.children.length === 0) movieWriter.textContent = 'N/A';
             
-            // Cast
             movieCast.innerHTML = '';
             (meta.cast || []).slice(0, 5).forEach(actor => movieCast.appendChild(createTag(actor))); 
             if (movieCast.children.length === 0) movieCast.textContent = 'N/A';
@@ -518,21 +647,14 @@
         }
 
         /**
-         * Fetches movie details from the API based on the IMDb ID.
+         * Mode 2: Fetches movie details from the Cinmeta API based on the IMDb ID.
+         * @param {string} imdbId - The IMDb ID (ttXXXXXXX).
          */
-        async function fetchMovieDetails() {
-            clearContent();
+        async function fetchMovieDetails(imdbId) {
+            clearContent('detail');
             loader.style.display = 'block';
 
-            const id = document.getElementById('movie-id-input').value.trim();
-            if (!id || !id.match(/^tt\d+$/i)) {
-                loader.style.display = 'none';
-                errorMessage.textContent = 'Please enter a valid IMDb ID (e.g., tt5950044).';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            const url = `${API_BASE}${id}.json`;
+            const url = `${IMDB_DETAIL_API}${imdbId}.json`;
 
             try {
                 const response = await fetch(url);
@@ -544,13 +666,13 @@
                 const data = await response.json();
                 
                 if (!data.meta) {
-                    throw new Error('Movie details not found for this ID.');
+                    throw new Error('Details not found for this ID.');
                 }
                 
                 renderMovieDetails(data);
             } catch (error) {
                 console.error('Fetch error:', error);
-                errorMessage.textContent = `Error loading details for ID ${id}. Please check the ID and try again.`;
+                errorMessage.textContent = `Error loading details for ID ${imdbId}: ${error.message}`;
                 errorMessage.style.display = 'block';
                 contentDiv.style.display = 'none';
             } finally {
@@ -558,10 +680,16 @@
             }
         }
 
-        // Initialize the page with the default ID on load
+        // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('movie-id-input').value = DEFAULT_IMDB_ID;
-            fetchMovieDetails();
+            clearContent('search');
+            
+            // Set up the input to call handleSearch() on Enter key press
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            });
         });
     </script>
 </body>
