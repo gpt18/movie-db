@@ -3,112 +3,566 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Database</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Premium Cinematic Details</title>
+    <style>
+        /* Modern Font: Using system fonts first, falling back to a clean sans-serif */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+        :root {
+            /* Deeper, Premium Dark Background */
+            --background-dark: #080808; 
+            /* Futuristic Electric Blue Accent */
+            --accent-color: #00f0ff; 
+            /* Subtle Text Color */
+            --text-light: #b0b0b0; 
+            /* White for contrast */
+            --text-highlight: #ffffff; 
+            /* Glassmorphism/Card Background */
+            --card-glass: rgba(30, 30, 30, 0.8);
+            --shadow-subtle: 0 8px 30px rgba(0, 0, 0, 0.7);
+            --shadow-vibrant: 0 0 15px rgba(0, 240, 255, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            transition: background-color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* --- Search Bar & Input --- */
+        .search-container {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-input {
+            padding: 12px 18px;
+            width: 350px;
+            border: 1px solid #333;
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            font-size: 16px;
+            background-color: #222;
+            color: var(--text-highlight);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+        }
+
+        .search-button {
+            padding: 12px 25px;
+            border: none;
+            background-color: var(--accent-color);
+            color: var(--background-dark);
+            cursor: pointer;
+            border-radius: 0 6px 6px 0;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .search-button:hover {
+            background-color: #33ffff;
+            box-shadow: var(--shadow-vibrant);
+        }
+        
+        /* --- Hero Section (Cinematic Background) --- */
+        .hero {
+            position: relative;
+            height: 70vh; /* Taller hero section */
+            display: flex;
+            align-items: flex-end;
+            padding: 50px;
+            box-sizing: border-box;
+            background-size: cover;
+            background-position: center center;
+            transition: background-image 0.5s ease;
+            overflow: hidden; /* Important for cleaner logo display */
+        }
+
+        /* Enhanced Gradient Overlay for readability */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, var(--background-dark) 5%, rgba(8, 8, 8, 0.8) 30%, rgba(8, 8, 8, 0.5) 100%);
+            z-index: 1;
+        }
+
+        /* --- Movie Header Details --- */
+        .movie-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: flex-end;
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .poster-image {
+            width: 280px; /* Slightly larger poster */
+            height: 420px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-subtle);
+            margin-right: 50px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid var(--text-highlight);
+            transition: all 0.3s ease;
+        }
+
+        .poster-image:hover {
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.7); /* Subtle glow on hover */
+            transform: scale(1.02);
+        }
+
+        .info-block {
+            padding-bottom: 20px;
+        }
+
+        .movie-logo {
+            max-width: 450px;
+            height: auto;
+            margin-bottom: 15px;
+            display: block;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.8)); /* Logo shadow for contrast */
+        }
+
+        .movie-title {
+            font-size: 3.8em;
+            font-weight: 700;
+            color: var(--text-highlight);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .stats-line {
+            display: flex;
+            align-items: center;
+            margin: 10px 0 20px 0;
+            gap: 20px;
+        }
+
+        .rating {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #00f0ff, #00c6ff);
+            color: var(--background-dark);
+            padding: 6px 15px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 4px 10px rgba(0, 240, 255, 0.4);
+        }
+
+        .year-info {
+            font-size: 1.1em;
+            color: var(--text-light);
+            font-weight: 400;
+            border-left: 1px solid #333;
+            padding-left: 20px;
+        }
+
+        /* --- Main Details Section (Glassmorphism) --- */
+        .main-content {
+            padding: 40px 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .details-container {
+            /* Glassmorphism Effect */
+            background: var(--card-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .details-container h3 {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.5em;
+            border-bottom: 2px solid #2a2a2a;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .detail-row strong {
+            display: block;
+            color: var(--text-highlight);
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .description {
+            line-height: 1.7;
+            font-weight: 300;
+            font-size: 1.1em;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .genres, .cast, .director, .writer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .genre-tag, .person-name {
+            background-color: #1e1e1e;
+            color: var(--text-light);
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 400;
+            border: 1px solid #333;
+            transition: all 0.2s ease;
+        }
+
+        .genre-tag:hover, .person-name:hover {
+            background-color: var(--accent-color);
+            color: var(--background-dark);
+            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 240, 255, 0.4);
+        }
+
+        /* --- Loading and Error States (Styled) --- */
+        #loader {
+            text-align: center;
+            padding: 80px;
+            font-size: 1.8em;
+            color: var(--accent-color);
+            animation: pulse 1.5s infinite;
+            display: none;
+        }
+        
+        #error-message {
+            text-align: center;
+            padding: 80px;
+            font-size: 1.4em;
+            color: var(--text-highlight);
+            background-color: #301010;
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            margin: 50px auto;
+            max-width: 600px;
+            display: none;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .hero {
+                height: auto;
+                padding-top: 20px;
+            }
+            .movie-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .poster-image {
+                margin: 0 0 20px 0;
+            }
+            .movie-logo {
+                max-width: 80%;
+            }
+            .movie-title {
+                font-size: 2.5em;
+            }
+            .stats-line {
+                justify-content: center;
+            }
+            .details-container {
+                padding: 20px;
+            }
+        }
+        @media (max-width: 600px) {
+            .poster-image {
+                width: 180px;
+                height: 270px;
+            }
+            .movie-title {
+                font-size: 2em;
+            }
+            .search-container {
+                flex-direction: column;
+            }
+            .search-input, .search-button {
+                width: 100%;
+                box-sizing: border-box;
+                border-radius: 6px;
+                margin-bottom: 10px;
+            }
+            .search-input {
+                 border-right: 1px solid #333;
+            }
+            .search-button {
+                margin-bottom: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="background-overlay"></div>
-    
-    <div class="container">
-        <header>
-            <h1 class="app-title">Movie Database</h1>
-            <p class="app-subtitle">Discover movies by IMDb ID</p>
-        </header>
 
-        <div class="search-container">
-            <input 
-                type="text" 
-                id="imdbInput" 
-                class="search-input" 
-                placeholder="Enter IMDb ID (e.g., tt0111161)"
-                autocomplete="off"
-            >
-            <button id="searchBtn" class="search-btn">Search</button>
-        </div>
-
-        <div id="loading" class="loading-container hidden">
-            <div class="spinner"></div>
-            <p>Loading movie data...</p>
-        </div>
-
-        <div id="error" class="error-container hidden">
-            <p class="error-message"></p>
-        </div>
-
-        <div id="movieData" class="movie-container hidden">
-            <div class="movie-header">
-                <div class="movie-poster-container">
-                    <img id="moviePoster" class="movie-poster" alt="Movie Poster">
-                </div>
-                <div class="movie-info">
-                    <div class="movie-logo-container">
-                        <img id="movieLogo" class="movie-logo" alt="Movie Logo">
-                    </div>
-                    <h2 id="movieTitle" class="movie-title"></h2>
-                    <div class="movie-meta">
-                        <span id="movieYear" class="movie-year"></span>
-                        <span class="separator">•</span>
-                        <span id="movieRated" class="movie-rated"></span>
-                        <span class="separator">•</span>
-                        <span id="movieRuntime" class="movie-runtime"></span>
-                    </div>
-                    <div class="movie-genres" id="movieGenre"></div>
-                    <div class="ratings-container">
-                        <div class="rating-item">
-                            <span class="rating-label">IMDb</span>
-                            <span id="imdbRating" class="rating-value"></span>
-                        </div>
-                        <div class="rating-item">
-                            <span class="rating-label">Metascore</span>
-                            <span id="metascore" class="rating-value"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="movie-details">
-                <div class="detail-section">
-                    <h3 class="section-title">Synopsis</h3>
-                    <p id="moviePlot" class="movie-plot"></p>
-                </div>
-
-                <div class="detail-section">
-                    <h3 class="section-title">Director</h3>
-                    <p id="movieDirector" class="movie-director"></p>
-                </div>
-
-                <div class="detail-section">
-                    <h3 class="section-title">Cast</h3>
-                    <p id="movieActors" class="movie-actors"></p>
-                </div>
-
-                <div class="detail-section">
-                    <h3 class="section-title">Writers</h3>
-                    <p id="movieWriter" class="movie-writer"></p>
-                </div>
-
-                <div class="additional-info">
-                    <div class="info-item">
-                        <span class="info-label">Language:</span>
-                        <span id="movieLanguage" class="info-value"></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Country:</span>
-                        <span id="movieCountry" class="info-value"></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Awards:</span>
-                        <span id="movieAwards" class="info-value"></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Box Office:</span>
-                        <span id="movieBoxOffice" class="info-value"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="search-container">
+        <input type="text" id="movie-id-input" class="search-input" placeholder="Enter IMDb ID (e.g., tt5950044)">
+        <button class="search-button" onclick="fetchMovieDetails()">FIND MOVIE</button>
     </div>
 
-    <script src="script.js"></script>
+    <div id="error-message"></div>
+    <div id="loader">Loading cinematic data...</div>
+
+    <div id="movie-page-content" style="display: none;">
+        <header class="hero" id="hero-section">
+            <div class="movie-header">
+                <img id="poster-image" class="poster-image" src="" alt="Movie Poster">
+                
+                <div class="info-block">
+                    <img id="movie-logo" class="movie-logo" src="" alt="Movie Logo" style="display: none;">
+                    
+                    <h1 id="movie-title" class="movie-title"></h1>
+                    
+                    <div class="stats-line">
+                        <span id="imdb-rating" class="rating"></span>
+                        <span id="release-year" class="year-info"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="details-container">
+                <h3>// SYNOPSIS</h3>
+                <p id="movie-description" class="description"></p>
+
+                <div class="detail-row">
+                    <strong>GENRE CATEGORIES</strong> 
+                    <div id="movie-genres" class="genres"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <strong>COUNTRY</strong> 
+                    <span id="movie-country" style="color: var(--text-highlight);"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>DIRECTOR</strong> 
+                    <div id="movie-director" class="director"></div>
+                </div>
+
+                <div class="detail-row">
+                    <strong>WRITER(S)</strong> 
+                    <div id="movie-writer" class="writer"></div>
+                </div>
+
+                <div class="detail-row">
+                    <strong>CAST</strong> 
+                    <div id="movie-cast" class="cast"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Default ID for initial load
+        const DEFAULT_IMDB_ID = 'tt5950044'; 
+
+        // API Endpoint Templates
+        const API_BASE = 'https://v3-cinemeta.strem.io/meta/movie/';
+
+        // DOM Element references
+        const heroSection = document.getElementById('hero-section');
+        const posterImage = document.getElementById('poster-image');
+        const movieLogo = document.getElementById('movie-logo');
+        const movieTitle = document.getElementById('movie-title');
+        const imdbRating = document.getElementById('imdb-rating');
+        const releaseYear = document.getElementById('release-year');
+        const movieDescription = document.getElementById('movie-description');
+        const movieGenres = document.getElementById('movie-genres');
+        const movieCountry = document.getElementById('movie-country');
+        const movieDirector = document.getElementById('movie-director');
+        const movieWriter = document.getElementById('movie-writer');
+        const movieCast = document.getElementById('movie-cast');
+        const contentDiv = document.getElementById('movie-page-content');
+        const loader = document.getElementById('loader');
+        const errorMessage = document.getElementById('error-message');
+
+        /**
+         * Clears all content fields.
+         */
+        function clearContent() {
+            heroSection.style.backgroundImage = 'none';
+            posterImage.src = '';
+            movieLogo.src = '';
+            movieLogo.style.display = 'none';
+            movieTitle.textContent = '';
+            imdbRating.textContent = '';
+            releaseYear.textContent = '';
+            movieDescription.textContent = '';
+            movieGenres.innerHTML = '';
+            movieCountry.textContent = '';
+            movieDirector.innerHTML = '';
+            movieWriter.innerHTML = '';
+            movieCast.innerHTML = '';
+            contentDiv.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
+
+        /**
+         * Helper function to create tags (for genres, cast, etc.)
+         * @param {string} text - The text for the tag.
+         * @returns {HTMLElement} The created span element.
+         */
+        function createTag(text) {
+            const span = document.createElement('span');
+            span.className = 'genre-tag';
+            span.textContent = text;
+            return span;
+        }
+
+        /**
+         * Renders the fetched movie data to the page.
+         * @param {object} data - The movie meta data object.
+         */
+        function renderMovieDetails(data) {
+            const meta = data.meta;
+            if (!meta) {
+                throw new Error("Invalid movie meta data structure.");
+            }
+
+            // 1. Header/Hero Section
+            heroSection.style.backgroundImage = `url(${meta.background.replace('/medium/', '/large/')})`; // Use larger background
+            posterImage.src = meta.poster.replace('/small/', '/medium/');
+
+            if (meta.logo) {
+                movieLogo.src = meta.logo.replace('/medium/', '/large/');
+                movieLogo.style.display = 'block';
+            } else {
+                movieLogo.style.display = 'none';
+            }
+
+            // 2. Main Info Block
+            movieTitle.textContent = meta.name || 'TITLE UNKNOWN';
+            imdbRating.textContent = `IMDb ${meta.imdbRating || 'N/A'}`;
+            releaseYear.textContent = meta.year || 'N/A';
+            
+            // 3. Details Section
+            movieDescription.textContent = meta.description || 'No detailed synopsis available.';
+            movieCountry.textContent = meta.country || 'N/A';
+
+            // Lists (Genres, Cast, Director, Writer)
+            
+            // Genres
+            movieGenres.innerHTML = '';
+            (meta.genres || []).forEach(genre => movieGenres.appendChild(createTag(genre)));
+            if (movieGenres.children.length === 0) movieGenres.textContent = 'N/A';
+            
+            // Director
+            movieDirector.innerHTML = '';
+            (meta.director || []).forEach(director => movieDirector.appendChild(createTag(director)));
+            if (movieDirector.children.length === 0) movieDirector.textContent = 'N/A';
+            
+            // Writer
+            movieWriter.innerHTML = '';
+            (meta.writer || []).forEach(writer => movieWriter.appendChild(createTag(writer)));
+            if (movieWriter.children.length === 0) movieWriter.textContent = 'N/A';
+            
+            // Cast
+            movieCast.innerHTML = '';
+            (meta.cast || []).slice(0, 5).forEach(actor => movieCast.appendChild(createTag(actor))); 
+            if (movieCast.children.length === 0) movieCast.textContent = 'N/A';
+
+            contentDiv.style.display = 'block';
+        }
+
+        /**
+         * Fetches movie details from the API based on the IMDb ID.
+         */
+        async function fetchMovieDetails() {
+            clearContent();
+            loader.style.display = 'block';
+
+            const id = document.getElementById('movie-id-input').value.trim();
+            if (!id || !id.match(/^tt\d+$/i)) {
+                loader.style.display = 'none';
+                errorMessage.textContent = 'Please enter a valid IMDb ID (e.g., tt5950044).';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const url = `${API_BASE}${id}.json`;
+
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (!data.meta) {
+                    throw new Error('Movie details not found for this ID.');
+                }
+                
+                renderMovieDetails(data);
+            } catch (error) {
+                console.error('Fetch error:', error);
+                errorMessage.textContent = `Error loading details for ID ${id}. Please check the ID and try again.`;
+                errorMessage.style.display = 'block';
+                contentDiv.style.display = 'none';
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Initialize the page with the default ID on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('movie-id-input').value = DEFAULT_IMDB_ID;
+            fetchMovieDetails();
+        });
+    </script>
 </body>
 </html>
