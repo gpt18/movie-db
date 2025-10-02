@@ -2,6 +2,52 @@
 const API_KEY = '6c446938'; // Public OMDb API key for demonstration
 const API_URL = 'https://www.omdbapi.com/';
 
+// Demo mode with sample data for testing
+const DEMO_MODE = false; // Set to true to use sample data without API calls
+
+const DEMO_DATA = {
+    'tt0111161': {
+        Title: 'The Shawshank Redemption',
+        Year: '1994',
+        Rated: 'R',
+        Runtime: '142 min',
+        Genre: 'Drama',
+        Director: 'Frank Darabont',
+        Writer: 'Stephen King, Frank Darabont',
+        Actors: 'Tim Robbins, Morgan Freeman, Bob Gunton',
+        Plot: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency. Andy Dufresne is sent to Shawshank Prison for the murder of his wife and secret lover. He is very isolated and lonely at first, but realizes there is something deep inside your body that people can\'t touch or get to...HOPE. Andy becomes friends with prison \'fixer\' Red, and Andy epitomizes why it is crucial to have dreams. His spirit and determination lead us into a world full of imagination, one filled with courage and desire.',
+        Language: 'English',
+        Country: 'United States',
+        Awards: 'Nominated for 7 Oscars. 21 wins & 42 nominations total',
+        Poster: 'https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_SX300.jpg',
+        Metascore: '82',
+        imdbRating: '9.3',
+        imdbID: 'tt0111161',
+        BoxOffice: '$28,767,189',
+        Response: 'True'
+    },
+    'tt0068646': {
+        Title: 'The Godfather',
+        Year: '1972',
+        Rated: 'R',
+        Runtime: '175 min',
+        Genre: 'Crime, Drama',
+        Director: 'Francis Ford Coppola',
+        Writer: 'Mario Puzo, Francis Ford Coppola',
+        Actors: 'Marlon Brando, Al Pacino, James Caan',
+        Plot: 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son. Don Vito Corleone is the head of a New York Mafia \'family.\' Problems arise when a gangster supported by another Mafia family, Sollozzo, announces his intentions to start selling drugs all over New York. The story details the Corleone family and the many trials and tribulations they face as they fight for power against the other families.',
+        Language: 'English, Italian, Latin',
+        Country: 'United States',
+        Awards: 'Won 3 Oscars. 31 wins & 30 nominations total',
+        Poster: 'https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg',
+        Metascore: '100',
+        imdbRating: '9.2',
+        imdbID: 'tt0068646',
+        BoxOffice: '$136,381,073',
+        Response: 'True'
+    }
+};
+
 // DOM elements
 const imdbInput = document.getElementById('imdbInput');
 const searchBtn = document.getElementById('searchBtn');
@@ -43,16 +89,28 @@ async function fetchMovieData(imdbId) {
     hideMovieData();
 
     try {
-        const response = await fetch(`${API_URL}?i=${imdbId}&apikey=${API_KEY}&plot=full`);
+        let data;
         
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+        if (DEMO_MODE) {
+            // Use demo data
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+            data = DEMO_DATA[imdbId];
+            if (!data) {
+                throw new Error('Movie not found in demo data. Try tt0111161 or tt0068646');
+            }
+        } else {
+            // Fetch from API
+            const response = await fetch(`${API_URL}?i=${imdbId}&apikey=${API_KEY}&plot=full`);
+            
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-        const data = await response.json();
+            data = await response.json();
 
-        if (data.Response === 'False') {
-            throw new Error(data.Error || 'Movie not found');
+            if (data.Response === 'False') {
+                throw new Error(data.Error || 'Movie not found');
+            }
         }
 
         displayMovieData(data);
